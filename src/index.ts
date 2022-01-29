@@ -13,7 +13,11 @@ app.get("/", (req: Request, res: Response) => {
     res.send("Server is work");
 });
 
-app.listen(PORT, () => {
-    connection();
-    console.log(`Server is running on port ${PORT}...`);
+app.listen(PORT, async () => {
+    try {
+        await connection();
+        console.log(`Server is running on port ${PORT}...`);
+    } catch (error) {
+        console.error(error);
+    }
 });
