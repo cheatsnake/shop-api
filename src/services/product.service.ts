@@ -1,14 +1,20 @@
+import { Category } from "../entities/category.entity";
 import { ProductDto } from "../dto/product.dto";
 import { Product } from "../entities/product.entity";
 
 export class ProductService {
     async create(dto: ProductDto) {
         try {
-            const product = Product.create(dto);
+            const category = await Category.findOne({ name: dto.category });
+            if (!category) {
+                throw new Error();
+            }
+
+            const product = Product.create({ ...dto, category });
             await product.save();
             return product;
         } catch (error) {
-            console.error(error);
+            throw error;
         }
     }
 

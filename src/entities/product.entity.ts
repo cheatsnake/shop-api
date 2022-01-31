@@ -18,20 +18,21 @@ export class Product extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ nullable: false })
     name: string;
 
-    @Column()
+    @Column({ nullable: false })
     price: number;
 
     @ManyToOne(() => Category, (category) => category.name)
     @JoinColumn()
     category: Category;
 
-    @Column()
+    @Column({ nullable: false })
     description: string;
 
     @Column({
+        nullable: false,
         type: "simple-array",
         default: [],
     })
