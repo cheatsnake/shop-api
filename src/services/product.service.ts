@@ -18,11 +18,68 @@ export class ProductService {
         }
     }
 
-    async findById(id: string) {}
+    async findById(id: string) {
+        try {
+            const product = await Product.findOne(parseInt(id));
+            if (!product) {
+                throw new Error();
+            }
+            return product;
+        } catch (error) {
+            throw error;
+        }
+    }
 
-    async findByCategory(category: string) {}
+    async findByCategory(category: string) {
+        try {
+            const product = await Product.findOne(category);
+            if (!product) {
+                throw new Error();
+            }
+            return product;
+        } catch (error) {
+            throw error;
+        }
+    }
 
-    async updateById(id: string, dto: ProductDto) {}
+    async findAll() {
+        try {
+            const products = await Product.find();
+            return products;
+        } catch (error) {
+            throw error;
+        }
+    }
 
-    async deleteById(id: string) {}
+    async updateById(id: string, dto: ProductDto) {
+        try {
+            const product = await Product.findOne(parseInt(id));
+            if (!product) {
+                throw new Error();
+            }
+            const newCategory = await Category.findOne({ name: dto.category });
+            if (!newCategory) {
+                throw new Error();
+            }
+            const updatedProduct = await Product.update(parseInt(id), {
+                ...dto,
+                category: newCategory,
+            });
+            return updatedProduct;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async deleteById(id: string) {
+        try {
+            const product = await Product.findOne(parseInt(id));
+            if (!product) {
+                throw new Error();
+            }
+            return;
+        } catch (error) {
+            throw error;
+        }
+    }
 }

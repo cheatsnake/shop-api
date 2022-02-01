@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { INCORRECT_DATA, ITEM_NOT_FOUND } from "../utils/error.constants";
+import {
+    INCORRECT_DATA,
+    ITEM_NOT_FOUND,
+    SERVER_ERROR,
+} from "../utils/error.constants";
 import { ProductService } from "../services/product.service";
 
 const productService = new ProductService();
@@ -38,6 +42,15 @@ export class ProductController {
             return res.json(products);
         } catch (error) {
             return res.status(400).json({ message: ITEM_NOT_FOUND });
+        }
+    }
+
+    async findAll(req: Request, res: Response) {
+        try {
+            const products = await productService.findAll();
+            return res.json(products);
+        } catch (error) {
+            return res.status(400).json({ message: SERVER_ERROR });
         }
     }
 

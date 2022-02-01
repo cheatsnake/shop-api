@@ -5,9 +5,10 @@ const router = Router();
 const productController = new ProductController();
 
 router.post("/product", productController.create);
-router.get("/product/:id");
-router.get("/product/:category");
-router.put("/product/:id");
-router.delete("/product/:id");
+router.get("/product/:id", productController.findById);
+router.get("/product/:category", productController.findByCategory);
+router.get("/product", productController.findAll);
+router.put("/product/:id", productController.updateById);
+router.delete("/product/:id", productController.deleteById);
 
 export { router as productRouter };
