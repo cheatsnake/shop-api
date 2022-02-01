@@ -2,6 +2,7 @@ import { Category } from "../entities/category.entity";
 import { ProductDto } from "../dto/product.dto";
 import { Product } from "../entities/product.entity";
 import { UpdateProductDto } from "../dto/updateProduct.dto";
+import { Param } from "../entities/param.entity";
 
 export class ProductService {
     async create(dto: ProductDto) {
@@ -11,7 +12,30 @@ export class ProductService {
                 throw new Error();
             }
 
-            const product = Product.create({ ...dto, category });
+            const paramsArray: Param[] = [];
+            dto.params.forEach(async (elem) => {
+                const param = await Param.findOne({
+                    name: elem.name,
+                    body: elem.body,
+                });
+
+                if (!param) {
+                    const newParam = Param.create({
+                        name: elem.name,
+                        body: elem.body,
+                    });
+                    await newParam.save();
+                    paramsArray.push(newParam);
+                } else {
+                    paramsArray.push(param);
+                }
+            });
+
+            const product = Product.create({
+                ...dto,
+                category,
+                params: paramsArray,
+            });
             await product.save();
             return product;
         } catch (error) {
@@ -23,7 +47,7 @@ export class ProductService {
         try {
             const product = await Product.find({
                 where: { id: parseInt(id) },
-                relations: ["category"],
+                relations: ["category", "params"],
             });
             if (!product) {
                 throw new Error();
@@ -42,7 +66,7 @@ export class ProductService {
             }
             const product = await Product.find({
                 where: { category },
-                relations: ["category"],
+                relations: ["category", "params"],
             });
             if (!product) {
                 throw new Error();
@@ -55,7 +79,9 @@ export class ProductService {
 
     async findAll() {
         try {
-            const products = await Product.find({ relations: ["category"] });
+            const products = await Product.find({
+                relations: ["category", "params"],
+            });
             return products;
         } catch (error) {
             throw error;
