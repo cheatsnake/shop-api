@@ -1,6 +1,7 @@
 import { Category } from "../entities/category.entity";
 import { ProductDto } from "../dto/product.dto";
 import { Product } from "../entities/product.entity";
+import { UpdateProductDto } from "../dto/updateProduct.dto";
 
 export class ProductService {
     async create(dto: ProductDto) {
@@ -20,7 +21,10 @@ export class ProductService {
 
     async findById(id: string) {
         try {
-            const product = await Product.findOne(parseInt(id));
+            const product = await Product.find({
+                where: { id: parseInt(id) },
+                relations: ["category"],
+            });
             if (!product) {
                 throw new Error();
             }
@@ -30,9 +34,16 @@ export class ProductService {
         }
     }
 
-    async findByCategory(category: string) {
+    async findByCategory(ctg: string) {
         try {
-            const product = await Product.findOne(category);
+            const category = await Category.findOne({ name: ctg });
+            if (!category) {
+                throw new Error();
+            }
+            const product = await Product.find({
+                where: { category },
+                relations: ["category"],
+            });
             if (!product) {
                 throw new Error();
             }
@@ -44,16 +55,16 @@ export class ProductService {
 
     async findAll() {
         try {
-            const products = await Product.find();
+            const products = await Product.find({ relations: ["category"] });
             return products;
         } catch (error) {
             throw error;
         }
     }
 
-    async updateById(id: string, dto: ProductDto) {
+    async updateById(dto: UpdateProductDto) {
         try {
-            const product = await Product.findOne(parseInt(id));
+            const product = await Product.findOne(dto.id);
             if (!product) {
                 throw new Error();
             }
@@ -61,7 +72,7 @@ export class ProductService {
             if (!newCategory) {
                 throw new Error();
             }
-            const updatedProduct = await Product.update(parseInt(id), {
+            const updatedProduct = await Product.update(dto.id, {
                 ...dto,
                 category: newCategory,
             });
@@ -77,7 +88,8 @@ export class ProductService {
             if (!product) {
                 throw new Error();
             }
-            return;
+            const deletedProduct = await Product.delete({ id: parseInt(id) });
+            return deletedProduct;
         } catch (error) {
             throw error;
         }

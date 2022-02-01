@@ -29,7 +29,7 @@ export class ProductController {
         try {
             const { id } = req.params;
             const product = await productService.findById(id);
-            return res.json(product);
+            return res.json(...product);
         } catch (error) {
             return res.status(400).json({ message: ITEM_NOT_FOUND });
         }
@@ -56,14 +56,7 @@ export class ProductController {
 
     async updateById(req: Request, res: Response) {
         try {
-            const { id, name, price, category, description, images } = req.body;
-            const updatedProduct = await productService.updateById(id, {
-                name,
-                price,
-                category,
-                description,
-                images,
-            });
+            const updatedProduct = await productService.updateById(req.body);
             return res.json(updatedProduct);
         } catch (error) {
             return res.status(400).json({ message: ITEM_NOT_FOUND });
@@ -73,8 +66,8 @@ export class ProductController {
     async deleteById(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            await productService.deleteById(id);
-            return res.status(200);
+            const deletedProduct = await productService.deleteById(id);
+            return res.json(deletedProduct);
         } catch (error) {
             return res.status(400).json({ message: ITEM_NOT_FOUND });
         }
