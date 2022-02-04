@@ -1,3 +1,5 @@
+import { Param } from "../entities/product.entity";
+
 export class UpdateProductDto {
     id: number;
     name: string;
@@ -6,4 +8,5 @@ export class UpdateProductDto {
     description: string;
     images: string[];
     available: boolean;
+    params: Param[];
 }

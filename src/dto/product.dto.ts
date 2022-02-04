@@ -1,7 +1,4 @@
-interface Params {
-    name: string;
-    body: string;
-}
+import { Param } from "../entities/product.entity";
 
 export class ProductDto {
     name: string;
@@ -9,5 +6,5 @@ export class ProductDto {
     category: string;
     description: string;
     images: string[];
-    params: Params[];
+    params: Param[];
 }

@@ -4,14 +4,16 @@ import {
     CreateDateColumn,
     Entity,
     JoinColumn,
-    JoinTable,
-    ManyToMany,
     ManyToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from "typeorm";
 import { Category } from "./category.entity";
-import { Param } from "./param.entity";
+
+export interface Param {
+    name: string;
+    body: string;
+}
 
 @Entity("product")
 export class Product extends BaseEntity {
@@ -38,8 +40,10 @@ export class Product extends BaseEntity {
     })
     images: string[];
 
-    @ManyToMany(() => Param)
-    @JoinTable()
+    @Column("jsonb", {
+        nullable: false,
+        default: [],
+    })
     params: Param[];
 
     @Column({
