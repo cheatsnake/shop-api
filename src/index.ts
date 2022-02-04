@@ -4,6 +4,7 @@ import cors from "cors";
 import { connection } from "./configs/database.config";
 import { productRouter } from "./routes/product.router";
 import { categoryRouter } from "./routes/category.router";
+import { userRouter } from "./routes/user.router";
 
 const PORT: number = Number(process.env.PORT) || 5000;
 const app: Application = express();
@@ -13,6 +14,7 @@ app.use(express.json());
 
 app.use("/api", productRouter);
 app.use("/api", categoryRouter);
+app.use("/api", userRouter);
 app.get("/", (req: Request, res: Response) => {
     res.send("Server is work");
 });
