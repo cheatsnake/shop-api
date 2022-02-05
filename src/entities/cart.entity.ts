@@ -10,9 +10,6 @@ export class Cart extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ unique: true, nullable: false })
-    userId: number;
-
     @Column({
         type: "simple-json",
         default: [],
