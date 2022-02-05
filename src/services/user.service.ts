@@ -1,6 +1,5 @@
-import "dotenv/config";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import { generateJwt } from "../utils/jwt-generator";
 import { UserDto } from "../dto/user.dto";
 import { Cart } from "../entities/cart.entity";
 import { User } from "../entities/user.entity";
@@ -13,24 +12,29 @@ export class UserService {
         }
         const passwordHash = await bcrypt.hash(dto.password, 7);
         const newUser = User.create({ email: dto.email, passwordHash });
-        const cart = Cart.create({ userId: newUser.id });
+        const cart = Cart.create();
+
         await cart.save();
         newUser.cart = cart;
-        console.log(newUser);
-
-        const jwtToken = jwt.sign(
-            {
-                id: newUser.id,
-                email: newUser.email,
-                role: newUser.role,
-            },
-            String(process.env.JWT_SECRET),
-            { expiresIn: "1h" }
-        );
-
         await newUser.save();
+
+        const jwtToken = generateJwt(newUser.id, newUser.email, newUser.role);
 
         return jwtToken;
     }
-    async login(dto: UserDto) {}
+    async login(dto: UserDto) {
+        const user = await User.findOne({ where: { email: dto.email } });
+        if (!user) {
+            throw new Error();
+        }
+        const isValidPassword = await bcrypt.compare(
+            dto.password,
+            user.passwordHash
+        );
+        if (!isValidPassword) {
+            throw new Error();
+        }
+        const token = generateJwt(user.id, user.email, user.role);
+        return token;
+    }
 }
