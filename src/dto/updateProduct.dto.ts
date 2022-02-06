@@ -1,12 +1,5 @@
-import { Param } from "../entities/product.entity";
+import { ProductDto } from "./product.dto";
 
-export class UpdateProductDto {
+export class UpdateProductDto extends ProductDto {
     id: number;
-    name: string;
-    price: number;
-    category: string;
-    description: string;
-    images: string[];
-    available: boolean;
-    params: Param[];
 }
