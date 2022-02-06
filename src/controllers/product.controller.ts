@@ -31,7 +31,12 @@ export class ProductController {
     async findByCategory(req: Request, res: Response) {
         try {
             const { category } = req.params;
-            const products = await productService.findByCategory(category);
+            const { page, limit } = req.query;
+            const products = await productService.findByCategory(
+                category,
+                Number(page),
+                Number(limit)
+            );
             return res.json(products);
         } catch (error) {
             return res.status(400).json({ message: ITEM_NOT_FOUND });
@@ -40,7 +45,11 @@ export class ProductController {
 
     async findAll(req: Request, res: Response) {
         try {
-            const products = await productService.findAll();
+            const { page, limit } = req.query;
+            const products = await productService.findAll(
+                Number(page),
+                Number(limit)
+            );
             return res.json(products);
         } catch (error) {
             return res.status(400).json({ message: SERVER_ERROR });

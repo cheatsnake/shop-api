@@ -37,7 +37,7 @@ export class ProductService {
         }
     }
 
-    async findByCategory(ctg: string) {
+    async findByCategory(ctg: string, page = 1, limit = 10) {
         try {
             const category = await Category.findOne({ name: ctg });
             if (!category) {
@@ -46,6 +46,8 @@ export class ProductService {
             const product = await Product.find({
                 where: { category },
                 relations: ["category"],
+                take: page,
+                skip: page * limit - limit,
             });
             if (!product) {
                 throw new Error();
@@ -56,10 +58,12 @@ export class ProductService {
         }
     }
 
-    async findAll() {
+    async findAll(page = 1, limit = 10) {
         try {
             const products = await Product.find({
                 relations: ["category"],
+                take: page,
+                skip: page * limit - limit,
             });
             return products;
         } catch (error) {
