@@ -3,7 +3,11 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { UNAUTHORIZED } from "../utils/error.constants";
 
-export function authVerify(req: Request, res: Response, next: NextFunction) {
+export function authMiddleware(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
     if (req.method === "OPTIONS") {
         next();
     }

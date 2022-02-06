@@ -9,7 +9,7 @@ interface DecodedToken extends JwtPayload {
     role: string;
 }
 
-export function adminVerify() {
+export function adminMiddleware() {
     return function (req: Request, res: Response, next: NextFunction) {
         if (req.method === "OPTIONS") {
             next();
