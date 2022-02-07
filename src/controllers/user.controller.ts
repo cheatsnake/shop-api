@@ -1,30 +1,29 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { generateJwt } from "../utils/jwt-generator";
 import { UserService } from "../services/user.service";
-import { INCORRECT_DATA, UNAUTHORIZED } from "../utils/error.constants";
 
 const userService = new UserService();
 
 export class UserController {
-    async register(req: Request, res: Response) {
+    async register(req: Request, res: Response, next: NextFunction) {
         try {
             const token = await userService.register(req.body);
             return res.json({ token: token });
         } catch (error) {
-            res.status(400).json({ message: INCORRECT_DATA });
+            next(error);
         }
     }
 
-    async login(req: Request, res: Response) {
+    async login(req: Request, res: Response, next: NextFunction) {
         try {
             const token = await userService.login(req.body);
             return res.json({ token: token });
         } catch (error) {
-            res.status(400).json({ message: INCORRECT_DATA });
+            next(error);
         }
     }
 
-    async verify(req: Request, res: Response) {
+    async verify(req: Request, res: Response, next: NextFunction) {
         try {
             const token = generateJwt(
                 Number(req.body.user.id),
@@ -33,7 +32,7 @@ export class UserController {
             );
             return res.json({ token: token });
         } catch (error) {
-            res.status(401).json({ message: UNAUTHORIZED });
+            next(error);
         }
     }
 }

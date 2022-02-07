@@ -1,8 +1,14 @@
+import { CATEGORY_ALREADY_EXISTS } from "../utils/error.constants";
+import { ErrorHandler } from "../utils/error.handler";
 import { Category } from "../entities/category.entity";
 
 export class CategoryService {
     async create(name: string) {
         try {
+            const isCategoryExist = await Category.find({ where: { name } });
+            if (isCategoryExist)
+                throw ErrorHandler.incorrectRequest(CATEGORY_ALREADY_EXISTS);
+
             const category = Category.create({ name });
             await category.save();
             return category;

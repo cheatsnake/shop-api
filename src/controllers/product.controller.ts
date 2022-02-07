@@ -1,34 +1,29 @@
-import { Request, Response } from "express";
-import {
-    INCORRECT_DATA,
-    ITEM_NOT_FOUND,
-    SERVER_ERROR,
-} from "../utils/error.constants";
+import { NextFunction, Request, Response } from "express";
 import { ProductService } from "../services/product.service";
 
 const productService = new ProductService();
 
 export class ProductController {
-    async create(req: Request, res: Response) {
+    async create(req: Request, res: Response, next: NextFunction) {
         try {
             const product = await productService.create(req.body);
             return res.json(product);
         } catch (error) {
-            return res.status(400).json({ message: INCORRECT_DATA });
+            next(error);
         }
     }
 
-    async findById(req: Request, res: Response) {
+    async findById(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
             const product = await productService.findById(id);
-            return res.json(...product);
+            return res.json(product);
         } catch (error) {
-            return res.status(400).json({ message: ITEM_NOT_FOUND });
+            next(error);
         }
     }
 
-    async findByCategory(req: Request, res: Response) {
+    async findByCategory(req: Request, res: Response, next: NextFunction) {
         try {
             const { category } = req.params;
             const { page, limit } = req.query;
@@ -39,11 +34,11 @@ export class ProductController {
             );
             return res.json(products);
         } catch (error) {
-            return res.status(400).json({ message: ITEM_NOT_FOUND });
+            next(error);
         }
     }
 
-    async findAll(req: Request, res: Response) {
+    async findAll(req: Request, res: Response, next: NextFunction) {
         try {
             const { page, limit } = req.query;
             const products = await productService.findAll(
@@ -52,26 +47,26 @@ export class ProductController {
             );
             return res.json(products);
         } catch (error) {
-            return res.status(400).json({ message: SERVER_ERROR });
+            next(error);
         }
     }
 
-    async updateById(req: Request, res: Response) {
+    async updateById(req: Request, res: Response, next: NextFunction) {
         try {
             const updatedProduct = await productService.updateById(req.body);
             return res.json(updatedProduct);
         } catch (error) {
-            return res.status(400).json({ message: ITEM_NOT_FOUND });
+            next(error);
         }
     }
 
-    async deleteById(req: Request, res: Response) {
+    async deleteById(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
             const deletedProduct = await productService.deleteById(id);
             return res.json(deletedProduct);
         } catch (error) {
-            return res.status(400).json({ message: ITEM_NOT_FOUND });
+            next(error);
         }
     }
 }
