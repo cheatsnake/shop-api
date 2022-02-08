@@ -6,6 +6,7 @@ import { productRouter } from "./routes/product.router";
 import { categoryRouter } from "./routes/category.router";
 import { userRouter } from "./routes/user.router";
 import { errorMiddleware } from "./middlewares/error.middleware";
+import { cartRouter } from "./routes/cart.router";
 
 const PORT: number = Number(process.env.PORT) || 5000;
 const app: Application = express();
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api", productRouter);
 app.use("/api", categoryRouter);
 app.use("/api", userRouter);
+app.use("/api/cart", cartRouter);
 app.get("/", (req: Request, res: Response) => {
     res.send("Server is work");
 });
