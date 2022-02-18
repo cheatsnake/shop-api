@@ -8,7 +8,7 @@ import {
     USER_ALREADY_EXISTS,
     USER_NOT_FOUND,
     WRONG_PASSWORD,
-} from "../utils/error.constants";
+} from "../constants/error.constants";
 
 export class UserService {
     async register(dto: UserDto) {

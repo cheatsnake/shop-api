@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { NextFunction, Request, Response } from "express";
-import { NO_ACCESS_ALLOWED, UNAUTHORIZED } from "../utils/error.constants";
+import { NO_ACCESS_ALLOWED, UNAUTHORIZED } from "../constants/error.constants";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { ErrorHandler } from "../utils/error.handler";
 
@@ -17,6 +17,7 @@ export function adminMiddleware() {
         }
         try {
             const token = req.headers.authorization?.split(" ")[1];
+
             if (!token) throw ErrorHandler.unauthorized(UNAUTHORIZED);
 
             const decodedToken: DecodedToken = <DecodedToken>(

@@ -1,5 +1,5 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
-import { SERVER_ERROR } from "../utils/error.constants";
+import { SERVER_ERROR } from "../constants/error.constants";
 import { ErrorHandler } from "../utils/error.handler";
 
 export function errorMiddleware(

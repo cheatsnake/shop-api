@@ -1,7 +1,7 @@
 import { ErrorHandler } from "../utils/error.handler";
 import { Product } from "../entities/product.entity";
 import { User } from "../entities/user.entity";
-import { PRODUCT_NOT_FOUND } from "../utils/error.constants";
+import { PRODUCT_NOT_FOUND } from "../constants/error.constants";
 import { Cart } from "../entities/cart.entity";
 
 export class CartService {

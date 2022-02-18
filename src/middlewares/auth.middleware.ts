@@ -2,7 +2,7 @@ import "dotenv/config";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { ErrorHandler } from "../utils/error.handler";
-import { UNAUTHORIZED } from "../utils/error.constants";
+import { UNAUTHORIZED } from "../constants/error.constants";
 
 export function authMiddleware(
     req: Request,

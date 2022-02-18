@@ -7,7 +7,7 @@ import {
     CATEGORY_NOT_FOUND,
     INCORRECT_DATA,
     PRODUCT_NOT_FOUND,
-} from "../utils/error.constants";
+} from "../constants/error.constants";
 
 export class ProductService {
     async create(dto: ProductDto) {
