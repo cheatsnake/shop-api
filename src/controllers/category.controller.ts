@@ -8,7 +8,7 @@ export class CategoryController {
         try {
             const { name } = req.body;
             const category = await categoryService.create(name);
-            return res.json(category);
+            return res.status(201).json(category);
         } catch (error) {
             next(error);
         }

@@ -7,7 +7,7 @@ export class ProductController {
     async create(req: Request, res: Response, next: NextFunction) {
         try {
             const product = await productService.create(req.body);
-            return res.json(product);
+            return res.status(201).json(product);
         } catch (error) {
             next(error);
         }

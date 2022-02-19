@@ -8,7 +8,7 @@ export class UserController {
     async register(req: Request, res: Response, next: NextFunction) {
         try {
             const token = await userService.register(req.body);
-            return res.json({ token: token });
+            return res.status(201).json({ token: token });
         } catch (error) {
             next(error);
         }
