@@ -5,7 +5,7 @@ import { authMiddleware } from "../middlewares/auth.middleware";
 const router = Router();
 const cartController = new CartController();
 
-router.get("/", authMiddleware, cartController.getCart);
-router.get("/add/:productId", authMiddleware, cartController.updateCart);
+router.get("/cart", authMiddleware, cartController.getCart);
+router.get("/cart/add/:productId", authMiddleware, cartController.updateCart);
 
 export { router as cartRouter };
