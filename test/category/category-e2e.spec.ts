@@ -8,10 +8,10 @@ const adminDto: UserDto = {
     password: "admin",
 };
 
-const categoryDto = { name: "test" };
+const categoryDto = { name: Date.now().toString() };
 let adminToken: string;
 
-describe("User module (authorization)", () => {
+describe("Category module", () => {
     beforeAll(async () => {
         await connection();
         const res = await request(app).post("/api/login").send(adminDto);
