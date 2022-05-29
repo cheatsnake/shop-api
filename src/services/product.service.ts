@@ -59,7 +59,7 @@ export class ProductService {
             const product = await Product.find({
                 where: { category },
                 relations: ["category"],
-                take: page,
+                take: limit,
                 skip: page * limit - limit,
             });
 
@@ -73,7 +73,7 @@ export class ProductService {
         try {
             const products = await Product.find({
                 relations: ["category"],
-                take: page,
+                take: limit,
                 skip: page * limit - limit,
             });
             return products;
